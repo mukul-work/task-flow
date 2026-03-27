@@ -3,12 +3,10 @@ import { getListCollection } from "@/models/List";
 export async function createList(data) {
   const lists = await getListCollection();
 
-  const result = await lists.insertOne({
-    ...data,
-    createdAt: new Date(),
-  });
+  const doc = { ...data, createdAt: new Date() };
+  const result = await lists.insertOne(doc);
 
-  return result;
+  return { ...doc, _id: result.insertedId.toString() };
 }
 
 export async function getLists(boardId) {

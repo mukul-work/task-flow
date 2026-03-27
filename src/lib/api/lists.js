@@ -1,12 +1,16 @@
-import { apiFetch } from "./fetcher";
+import api from "./fetcher";
 
 export async function getLists(boardId) {
-  return apiFetch(`/api/lists?boardId=${boardId}`);
+  const { data } = await api.get(`/api/lists?boardId=${boardId}`);
+  return data;
 }
 
-export async function createList(data) {
-  return apiFetch("/api/lists", {
-    method: "POST",
-    body: JSON.stringify(data),
-  });
+export async function createList(title, boardId, order = 1) {
+  const { data } = await api.post("/api/lists", { title, boardId, order });
+  return data;
+}
+
+export async function deleteList(id) {
+  const { data } = await api.delete(`/api/lists?id=${id}`);
+  return data;
 }

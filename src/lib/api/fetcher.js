@@ -1,16 +1,17 @@
-export async function apiFetch(url, options = {}) {
-  const res = await fetch(url, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-    },
-    ...options,
-  });
+import axios from "axios";
 
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`API error: ${res.status} ${text}`);
-  }
+// Axios instance — relative URLs work for Next.js same-origin API routes
+const api = axios.create({
+  headers: { "Content-Type": "application/json" },
+});
 
-  return res.json();
-}
+// Attach error message from response if available
+api.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    const message = err.response?.data?.error || err.message || "Unknown error";
+    return Promise.reject(new Error(message));
+  },
+);
+
+export default api;

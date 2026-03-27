@@ -4,12 +4,10 @@ import { getCardCollection } from "@/models/Card";
 export async function createCard(data) {
   const cards = await getCardCollection();
 
-  const result = await cards.insertOne({
-    ...data,
-    createdAt: new Date(),
-  });
+  const doc = { ...data, createdAt: new Date() };
+  const result = await cards.insertOne(doc);
 
-  return result;
+  return { ...doc, _id: result.insertedId.toString() };
 }
 
 export async function getCards(listId) {
@@ -21,10 +19,7 @@ export async function getCards(listId) {
 export async function updateCard(id, data) {
   const cards = await getCardCollection();
 
-  await cards.updateOne(
-    { _id: new ObjectId(id) },
-    { $set: data }
-  );
+  await cards.updateOne({ _id: new ObjectId(id) }, { $set: data });
 
   return true;
 }
