@@ -23,7 +23,7 @@ export function AddCardModal({ isOpen, onClose, onAdd, listTitle }) {
     }
     document.addEventListener('keydown', handleEscape)
     return () => document.removeEventListener('keydown', handleEscape)
-  }, [isOpen, onClose])
+  }, [isOpen])
 
   const handleSubmit = (e) => {
     e.preventDefault()
